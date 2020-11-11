@@ -19,10 +19,10 @@ public class CustomerConsumerListener {
 
 
   @KafkaListener(topics = "${cloudkarafka.topic}")
-  public void getMessageFromTopic(CustomerDTO customer) {
+  public void getMessageFromTopic(String customer) {
     try {
-      customerFromTopic = customer;
-      System.out.println("Consumed: " + customerFromTopic);
+      // customerFromTopic = customer;
+      System.out.println("Consumed: " + customer);
       consumerService.logCustomer(customer);
     } catch (Exception e) {
 
