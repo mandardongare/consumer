@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
     date = "2020-11-04T09:27:23.178Z")
 
 
-
+@JsonInclude(Include.NON_NULL)
 public class CustomerRequest {
   @JsonProperty("customerNumber")
   private String customerNumber = null;
@@ -51,13 +53,13 @@ public class CustomerRequest {
    * Account status for the retrieved RetailCustomer
    */
   public enum CustomerStatusEnum {
-    OPEN("Open"),
+    O("Open"),
 
-    CLOSED("Closed"),
+    C("Closed"),
 
-    SUSPENDED("Suspended"),
+    S("Suspended"),
 
-    RESERVED("Restored");
+    R("Restored");
 
     private String value;
 
@@ -84,6 +86,17 @@ public class CustomerRequest {
 
   @JsonProperty("customerStatus")
   private CustomerStatusEnum customerStatus = null;
+
+
+  private String status;
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
   public CustomerRequest customerNumber(String customerNumber) {
     this.customerNumber = customerNumber;

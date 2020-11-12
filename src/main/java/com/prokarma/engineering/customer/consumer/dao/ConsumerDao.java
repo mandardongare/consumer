@@ -18,17 +18,25 @@ public class ConsumerDao {
   private ErrorLogRepo errorLogRepo;
 
   public void auditLog(AuditLog log) {
-    auditLogRepo.save(log);
-    System.out.println("*********** AUDIT RECORDS *********************");
-    auditLogRepo.findAll().forEach(p -> System.out.println(p));
-    System.out.println("****************************************");
+    try {
+      auditLogRepo.save(log);
+      LOG.info("*********** AUDIT RECORDS *********************");
+      auditLogRepo.findAll().forEach(p -> System.out.println(p));
+      LOG.info("***********************************************");
+    } catch (Exception e) {
+      LOG.error("Failed to store in AUDIT_LOG :", e);
+    }
   }
 
   public void errorLog(ErrorLog log) {
-    errorLogRepo.save(log);
-    System.out.println("************ ERROR RECORDS ****************************");
-    errorLogRepo.findAll().forEach(p -> System.out.println(p));
-    System.out.println("****************************************");
+    try {
+      errorLogRepo.save(log);
+      LOG.info("************ ERROR RECORDS *********************");
+      errorLogRepo.findAll().forEach(p -> System.out.println(p));
+      LOG.info("************************************************");
+    } catch (Exception e) {
+      LOG.error("Failed to store in ERROR_LOG :", e);
+    }
   }
 
 
