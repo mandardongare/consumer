@@ -18,7 +18,6 @@ public class ObjectMapperUtil {
       return objectMapper.writeValueAsString(object);
     } catch (JsonProcessingException ex) {
       LOG.error("Failed to process the json: {} with exception {}", object, ex);
-    //  throw new InvalidCustomerDataException("General Error", "Failed to parse the json");
       return null;
     }
   }

@@ -17,15 +17,10 @@ public class CustomerConsumerListener {
   @Autowired
   private ConsumerService consumerService;
 
-
   @KafkaListener(topics = "${cloudkarafka.topic}")
   public void getMessageFromTopic(String customer) {
-    try {
-      LOG.info("Consumed: " + customer);
-      consumerService.logCustomer(customer);
-    } catch (Exception e) {
-
-    }
+    LOG.info("Consumed: " + customer);
+    consumerService.logCustomer(customer);
   }
 
 }
