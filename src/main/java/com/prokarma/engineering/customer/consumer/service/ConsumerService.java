@@ -15,16 +15,18 @@ public class ConsumerService {
   @Autowired
   private ConsumerDao consumerDao;
 
-  public void logCustomer(String input) {
+  public String logCustomer(String input) throws Exception {
     try {
       CustomerRequest customer = new ObjectMapper().readValue(input, CustomerRequest.class);
       customer.setStatus(customer.getCustomerStatus().name());
       customer.setCustomerStatus(null);
       String payload = ObjectMapperUtil.returnJsonFromObject(customer);
       consumerDao.auditLog(new AuditLog(customer.getCustomerNumber(), payload));
+      return ConsumerServiceConstants.MESSAGE_CONSUMPTION_SUCCESS;
     } catch (Exception ex) {
       consumerDao.errorLog(new ErrorLog(ex.getClass().getName(),
           ConsumerServiceConstants.MESSAGE_DESERIALIZE_EXCEPTION, input));
+      throw ex;
     }
 
   }
