@@ -17,8 +17,6 @@ public class ConsumerService {
   public void logCustomer(String input) {
     try {
       CustomerDTO customer = new ObjectMapper().readValue(input, CustomerDTO.class);
-      String statusCode = String.valueOf(customer.getCustomerStatus().charAt(0));
-      customer.setCustomerStatus(statusCode);
       String customerNumber = customer.getCustomerNumber();
       auditLog(customerNumber, input);
     } catch (Exception ex) {
