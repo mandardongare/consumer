@@ -16,11 +16,7 @@ public class CustomerConsumerListener {
 
   @KafkaListener(topics = "${cloudkarafka.topic}")
   public void getMessageFromTopic(String customer) {
-    try {
-      consumerService.logCustomer(customer);
-    } catch (Exception e) {
-
-    }
+    consumerService.logCustomer(customer);
   }
 
 }

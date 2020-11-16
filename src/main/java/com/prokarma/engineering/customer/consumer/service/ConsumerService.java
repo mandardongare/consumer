@@ -5,30 +5,43 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prokarma.engineering.customer.consumer.constants.ConsumerServiceConstants;
 import com.prokarma.engineering.customer.consumer.dao.ConsumerDao;
-import com.prokarma.engineering.customer.consumer.domain.CustomerRequest;
 import com.prokarma.engineering.customer.consumer.model.AuditLog;
+import com.prokarma.engineering.customer.consumer.model.CustomerDTO;
 import com.prokarma.engineering.customer.consumer.model.ErrorLog;
-import com.prokarma.engineering.customer.consumer.util.ObjectMapperUtil;
 
 @Service
 public class ConsumerService {
   @Autowired
   private ConsumerDao consumerDao;
 
-  public String logCustomer(String input) throws Exception {
+  public void logCustomer(String input) {
     try {
-      CustomerRequest customer = new ObjectMapper().readValue(input, CustomerRequest.class);
-      customer.setStatus(customer.getCustomerStatus().name());
-      customer.setCustomerStatus(null);
-      String payload = ObjectMapperUtil.returnJsonFromObject(customer);
-      consumerDao.auditLog(new AuditLog(customer.getCustomerNumber(), payload));
-      return ConsumerServiceConstants.MESSAGE_CONSUMPTION_SUCCESS;
+      CustomerDTO customer = new ObjectMapper().readValue(input, CustomerDTO.class);
+      String statusCode = String.valueOf(customer.getCustomerStatus().charAt(0));
+      customer.setCustomerStatus(statusCode);
+      String customerNumber = customer.getCustomerNumber();
+      auditLog(customerNumber, input);
     } catch (Exception ex) {
-      consumerDao.errorLog(new ErrorLog(ex.getClass().getName(),
-          ConsumerServiceConstants.MESSAGE_DESERIALIZE_EXCEPTION, input));
-      throw ex;
+      String errorType = ex.getClass().getName();
+      String errorDescription = ConsumerServiceConstants.MESSAGE_DESERIALIZE_EXCEPTION;
+      errorLog(errorType, errorDescription, input);
     }
 
+  }
+
+  private void auditLog(String customerNumber, String payload) throws Exception {
+    try {
+      consumerDao.auditLog(new AuditLog(customerNumber, payload));
+    } catch (Exception e) {
+
+    }
+  }
+
+  private void errorLog(String errorType, String errorDescription, String payload) {
+    try {
+      consumerDao.errorLog(new ErrorLog(errorType, errorDescription, payload));
+    } catch (Exception e) {
+    }
   }
 
 }
