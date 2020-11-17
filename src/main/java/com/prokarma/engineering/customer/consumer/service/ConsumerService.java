@@ -27,11 +27,10 @@ public class ConsumerService {
 
   }
 
-  private void auditLog(String customerNumber, String payload) throws Exception {
+  private void auditLog(String customerNumber, String payload) {
     try {
       consumerDao.auditLog(new AuditLog(customerNumber, payload));
     } catch (Exception e) {
-
     }
   }
 

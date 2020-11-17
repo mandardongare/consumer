@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 @Entity
@@ -21,7 +20,6 @@ public class AuditLog implements Serializable {
   private Long id;
   @Column(name = "CUSTOMER_NUMBER")
   private String customerNumber;
-  @Lob
   @Column(columnDefinition = "text")
   private String payload;
 
