@@ -27,7 +27,7 @@ import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prokarma.engineering.customer.consumer.model.CustomerDTO;
+import com.prokarma.engineering.customer.consumer.dto.CustomerDTO;
 import com.prokarma.engineering.customer.consumer.util.ObjectMapperUtil;
 
 @EmbeddedKafka

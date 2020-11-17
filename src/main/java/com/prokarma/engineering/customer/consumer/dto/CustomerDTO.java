@@ -1,4 +1,4 @@
-package com.prokarma.engineering.customer.consumer.model;
+package com.prokarma.engineering.customer.consumer.dto;
 
 public class CustomerDTO {
 
@@ -120,6 +120,33 @@ public class CustomerDTO {
     this.customerStatus = customerStatus;
   }
 
+  public CustomerDTO() {
+    super();
+  }
 
+  public CustomerDTO(CustomerDTO copy) {
+    customerNumber = copy.customerNumber;
+    firstName = copy.firstName;
+    lastName = copy.lastName;
+    birthDate = copy.birthDate;
+    country = copy.country;
+    countryCode = copy.countryCode;
+    mobileNumber = copy.mobileNumber;
+    email = copy.email;
+    addressLine1 = copy.addressLine1;
+    addressLine2 = copy.addressLine2;
+    street = copy.street;
+    postalCode = copy.postalCode;
+    customerStatus = copy.customerStatus;
+  }
+
+  @Override
+  public String toString() {
+    return "CustomerDTO [customerNumber=" + customerNumber + ", firstName=" + firstName
+        + ", lastName=" + lastName + ", birthDate=" + birthDate + ", country=" + country
+        + ", countryCode=" + countryCode + ", mobileNumber=" + mobileNumber + ", email=" + email
+        + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", street=" + street
+        + ", postalCode=" + postalCode + ", customerStatus=" + customerStatus + "]";
+  }
 
 }
