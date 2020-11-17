@@ -6,25 +6,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 @Entity
 @Table(name = "AUDIT_LOG")
-@TypeDefs({@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)})
 public class AuditLog implements Serializable {
   /**
    * 
    */
   private static final long serialVersionUID = 1L;
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   @Column(name = "CUSTOMER_NUMBER")
   private String customerNumber;
-  @Column(name = "PAYLOAD", columnDefinition = "jsonb")
+  @Lob
+  @Column(columnDefinition = "text")
   private String payload;
 
   public Long getId() {
