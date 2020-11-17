@@ -5,11 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 
 @Entity
 @Table(name = "ERROR_LOG")
+@TypeDefs({@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)})
 public class ErrorLog {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,8 +21,7 @@ public class ErrorLog {
   private String errorType;
   @Column(name = "ERROR_DESCRIPTION")
   private String errorDescription;
-  @Lob
-  @Column(name = "PAYLOAD", length = 512)
+  @Column(name = "PAYLOAD", columnDefinition = "jsonb")
   private String payload;
 
   public Long getId() {
