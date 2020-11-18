@@ -1,4 +1,4 @@
-package com.prokarma.engineering.customer.consumer.dto;
+package com.prokarma.engineering.customer.publisher.dto;
 
 public class CustomerDTO {
 

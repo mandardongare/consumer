@@ -8,14 +8,20 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.prokarma.engineering.customer.consumer.dao.ConsumerDao;
+import com.prokarma.engineering.customer.consumer.model.ErrorLog;
 import com.prokarma.engineering.customer.consumer.util.ObjectMapperUtil;
 
 @Aspect
 @Component
 public class DataLayerExecutionAspect {
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private Logger logger = LoggerFactory.getLogger(DataLayerExecutionAspect.class);
+
+  @Autowired
+  private ConsumerDao consumerDao;
 
   @Around("com.prokarma.engineering.customer.consumer.aop.CommonJoinPointConfig.dataLayerExecution()")
   public void aroundExcecution(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -30,7 +36,6 @@ public class DataLayerExecutionAspect {
     if (response != null)
       logger.info("Method Responded class: {} of method: {} with arguments: {} and response:{}",
           className, methodName, arguments, response);
-
   }
 
   @AfterThrowing(
@@ -40,6 +45,9 @@ public class DataLayerExecutionAspect {
     String methodName = joinPoint.getSignature().getName();
     String className = joinPoint.getTarget().getClass().getName();
     String arguments = ObjectMapperUtil.returnJsonFromObject(joinPoint.getArgs());
+
+    ErrorLog errorLog = new ErrorLog(ex.getClass().getName(), ex.getMessage(), arguments);
+    consumerDao.errorLog(errorLog);
 
     logger.error("Caught Exception in class: {} of method: {} with arguments: {} and exception {}",
         className, methodName, arguments, ex.getMessage());

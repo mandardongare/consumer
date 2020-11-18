@@ -1,4 +1,4 @@
-package com.prokarma.engineering.customer.consumer;
+package com.prokarma.engineering.customer.consumer.listener;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
@@ -27,8 +27,8 @@ import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prokarma.engineering.customer.consumer.dto.CustomerDTO;
 import com.prokarma.engineering.customer.consumer.util.ObjectMapperUtil;
+import com.prokarma.engineering.customer.publisher.dto.CustomerDTO;
 
 @EmbeddedKafka
 @ExtendWith(SpringExtension.class)
