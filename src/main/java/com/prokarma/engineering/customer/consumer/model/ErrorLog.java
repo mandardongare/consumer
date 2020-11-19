@@ -9,16 +9,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ERROR_LOG")
-// @TypeDefs({@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)})
 public class ErrorLog {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @Column(name = "ERROR_TYPE")
   private String errorType;
+
   @Column(name = "ERROR_DESCRIPTION")
   private String errorDescription;
-  // @Lob
+
   @Column(columnDefinition = "text")
   private String payload;
 

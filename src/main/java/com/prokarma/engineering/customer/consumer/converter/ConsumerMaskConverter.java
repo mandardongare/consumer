@@ -9,17 +9,12 @@ public class ConsumerMaskConverter implements Converter<CustomerDTO, CustomerDTO
 
   @Override
   public CustomerDTO convert(CustomerDTO input) {
-    try {
-      input.setCustomerNumber(
-          input.getCustomerNumber().replaceAll(ConsumerConstants.NUMBER_MASK.getValue(), "*"));
-      input.setBirthDate(
-          input.getBirthDate().replaceAll(ConsumerConstants.DATE_MASK.getValue(), "*"));
-      input.setEmail(input.getEmail().replaceAll(ConsumerConstants.EMAIL_MASK.getValue(), "*"));
-
-      return input;
-    } catch (Exception ex) {
-      throw ex;
-    }
+    input.setCustomerNumber(
+        input.getCustomerNumber().replaceAll(ConsumerConstants.NUMBER_MASK.getValue(), "*"));
+    input
+        .setBirthDate(input.getBirthDate().replaceAll(ConsumerConstants.DATE_MASK.getValue(), "*"));
+    input.setEmail(input.getEmail().replaceAll(ConsumerConstants.EMAIL_MASK.getValue(), "*"));
+    return input;
   }
 
 }

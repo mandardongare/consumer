@@ -22,13 +22,10 @@ public class ConsumerService {
   private ConsumerMaskConverter consumerMaskConverter;
 
   public void logCustomer(CustomerDTO input) {
-    try {
-      consumerMaskConverter.convert(input);
-      String customerNumber = input.getCustomerNumber();
-      consumerDao
-          .auditLog(new AuditLog(customerNumber, ObjectMapperUtil.returnJsonFromObject(input)));
-    } catch (Exception e) {
-      logger.error("Exception occured while processing: {0}", e);
-    }
+    consumerMaskConverter.convert(input);
+    logger.info("Consumed customer data from topic :{}", input);
+    String customerNumber = input.getCustomerNumber();
+    consumerDao
+        .auditLog(new AuditLog(customerNumber, ObjectMapperUtil.returnJsonFromObject(input)));
   }
 }

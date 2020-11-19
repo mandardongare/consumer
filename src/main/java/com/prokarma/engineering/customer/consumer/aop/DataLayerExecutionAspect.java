@@ -1,6 +1,5 @@
 package com.prokarma.engineering.customer.consumer.aop;
 
-import java.util.Arrays;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -27,15 +26,11 @@ public class DataLayerExecutionAspect {
   public void aroundExcecution(ProceedingJoinPoint joinPoint) throws Throwable {
     String methodName = joinPoint.getSignature().getName();
     String className = joinPoint.getTarget().getClass().getName();
-    String arguments = Arrays.toString(joinPoint.getArgs());
-
-    logger.info("Method Invoked in class: {} of method: {} with arguments: {}", className,
-        methodName, arguments);
-
+    logger.info("Method Invoked in class: {} of method: {} ", className, methodName);
     Object response = joinPoint.proceed();
     if (response != null)
-      logger.info("Method Responded class: {} of method: {} with arguments: {} and response:{}",
-          className, methodName, arguments, response);
+      logger.info("Method Responded class: {} of method: {} with response:{}", className,
+          methodName, response);
   }
 
   @AfterThrowing(

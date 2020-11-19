@@ -11,15 +11,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "AUDIT_LOG")
 public class AuditLog implements Serializable {
-  /**
-   * 
-   */
+
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @Column(name = "CUSTOMER_NUMBER")
   private String customerNumber;
+
   @Column(columnDefinition = "text")
   private String payload;
 
