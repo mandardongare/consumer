@@ -1,16 +1,15 @@
 package com.prokarma.engineering.customer.consumer.aop;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
-import com.prokarma.engineering.customer.consumer.dao.ConsumerDao;
 import com.prokarma.engineering.customer.consumer.model.ErrorLog;
+import com.prokarma.engineering.customer.consumer.repo.ErrorLogRepository;
 import com.prokarma.engineering.customer.consumer.util.ObjectMapperUtil;
 
 @Aspect
@@ -20,18 +19,8 @@ public class DataLayerExecutionAspect {
   private Logger logger = LoggerFactory.getLogger(DataLayerExecutionAspect.class);
 
   @Autowired
-  private ConsumerDao consumerDao;
+  private ErrorLogRepository errorLogRepository;
 
-  @Around("com.prokarma.engineering.customer.consumer.aop.CommonJoinPointConfig.dataLayerExecution()")
-  public void aroundExcecution(ProceedingJoinPoint joinPoint) throws Throwable {
-    String methodName = joinPoint.getSignature().getName();
-    String className = joinPoint.getTarget().getClass().getName();
-    logger.info("Method Invoked in class: {} of method: {} ", className, methodName);
-    Object response = joinPoint.proceed();
-    if (response != null)
-      logger.info("Method Responded class: {} of method: {} with response:{}", className,
-          methodName, response);
-  }
 
   @AfterThrowing(
       pointcut = "com.prokarma.engineering.customer.consumer.aop.CommonJoinPointConfig.dataLayerExecution()",
@@ -40,12 +29,16 @@ public class DataLayerExecutionAspect {
     String methodName = joinPoint.getSignature().getName();
     String className = joinPoint.getTarget().getClass().getName();
     String arguments = ObjectMapperUtil.returnJsonFromObject(joinPoint.getArgs());
-
     ErrorLog errorLog = new ErrorLog(ex.getClass().getName(), ex.getMessage(), arguments);
-    consumerDao.errorLog(errorLog);
 
-    logger.error("Caught Exception in class: {} of method: {} with arguments: {} and exception {}",
-        className, methodName, arguments, ex.getMessage());
+    logger.error("Caught Exception in class: {} of method: {} and exception {}", className,
+        methodName, ex.getMessage());
+    try {
+      errorLogRepository.save(errorLog);
+    } catch (DataAccessException e) {
+      logger.error("Failed to log error into ERROR_LOG: ", e);
+    }
+
   }
 
 
