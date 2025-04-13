@@ -1,0 +1,31 @@
+spring:
+  kafka:
+    bootstrap-servers: "127.0.0.1:9092"
+    producer:
+      valueSerializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        schema:
+          registry:
+            url: "http://127.0.0.1:8081"
+    consumer:
+      group-id: "w3pj8qbv-consumers"
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+topic:
+  name: w3pj8qbv-topic3
+
+  server:
+    port: 8083
+
+  jpa:
+    hibernate:
+      ddl-auto=create-drop:

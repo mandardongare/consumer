@@ -25,7 +25,7 @@ public class CustomerConsumerListener {
   @Autowired
   private ConsumerMaskConverter consumerMaskConverter;
 
-  @KafkaListener(topics = "${cloudkarafka.topic}")
+  @KafkaListener(topics = "${topic.name}")
   public void getMessageFromTopic(@Payload CustomerDTO customer) {
     CustomerDTO maskedCustomer = consumerMaskConverter.convert(customer);
     logger.info("Consumed message: {}", maskedCustomer);
